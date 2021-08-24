@@ -1,0 +1,27 @@
+﻿@{Layout = null;}
+<!--AQUI ME QUEDO AUN FALTA REVISAR TODO ESTO-->
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Producto</td>
+        <td>@item.Medidas</td>
+        <td>
+            @item.Cantidad
+            @if (item.Pedido_Presencial.Id_Estado != 5)
+            {
+                <a class="actualizarcantidaddetallepedido btn btn-warning" data-idpedido="@item.Id_Pedido_Presencial" data-iddetallepedido="@item.Id_Detalle_Pedido_Presencial"><span class="glyphicon glyphicon-refresh"></span></a>
+            }
+        </td>
+            <td>@item.Precio</td>
+            <td>@item.Sub_Total</td>
+        <td>@item.Descripcion</td>
+        <td>
+            @if (item.Pedido_Presencial.Id_Estado != 5)
+            {
+                <a class="eliminaritemdetallepedido btn btn-danger" data-idpedido="@item.Id_Pedido_Presencial" data-iddetallepedido="@item.Id_Detalle_Pedido_Presencial"><span class="glyphicon glyphicon-trash"></span>@*Eliminar*@</a>
+            }
+            else
+            { <label>...</label>}
+        </td>
+    </tr>
+}

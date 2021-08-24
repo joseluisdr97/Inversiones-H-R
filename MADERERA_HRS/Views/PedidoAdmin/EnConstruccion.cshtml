@@ -1,0 +1,492 @@
+﻿@{ Layout = "Layout_Admin"; }
+
+
+<footer>
+    <h1>Pedidos en construcción</h1>
+    <br />
+    <br />
+    <form action="/PedidoAdmin/EnConstruccion" method="get">
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="query" placeholder="Ingrese DNI" />
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary">Buscar</button>
+            </div>
+            <div class="col-sm-2"></div>
+            @*<div class="col-sm-2">
+                    <a class="btn btn-primary pull-right" href="/ProductoAdmin/Crear"><span class="glyphicon glyphicon-plus"></span> Crear</a>
+                </div>*@
+        </div>
+    </form>
+    <br />
+    <div class="container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Teléfono-comunicación</th>
+                    <th>Fecha</th>
+                    <th>Fecha-E-Solicitada</th>
+                    <th>Dirección entrega</th>
+                    <th>Total</th>
+                    <th>Avance</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbodynuevospedidos">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Usuario.DNI</td>
+                        <td>@item.Usuario.Nombre</td>
+                        <td>@item.Telefono_Comunicacion</td>
+                        <td>@item.Fecha</td>
+                        <td>@item.Fecha_Entrega_Solicitada</td>
+                        <td>@item.Direccion_Entrega</td>
+                        <td>@item.Total</td>
+                        <td>
+                            @{string a = "";
+                                a = Convert.ToString(item.Avance + "%");
+                            }
+                            <div class="progress">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: @a" aria-valuenow="@item.Avance" aria-valuemin="0" aria-valuemax="100">@a</div>
+                            </div>
+                            <br />
+                            <a class="actualizarporcentajeconstrucion btn btn-warning" data-idpedido="@item.Id_Pedido"><span class="glyphicon glyphicon-refresh"></span></a>
+                        </td>
+                        <td>
+                            <a class="finalizarconstruccionpedido btn btn-warning" data-idpedido="@item.Id_Pedido"><span class="glyphicon glyphicon-play"></span>Finalizar construcción</a>
+                            <a class="verdetallepedido btn btn-success" data-idpedido="@item.Id_Pedido" data-toggle="modal" data-target=".bd-example-modal-xl1"><span class="glyphicon glyphicon-eye-open"></span> Ver productos</a>
+                            <a class="eliminarpedido btn btn-danger" data-idpedido="@item.Id_Pedido"><span class="glyphicon glyphicon-trash"></span>Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!--Modal para mostrar el detalle de mi pedido que estoy seleccionando------------------->
+    <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+
+    <!-- Extra large modal -->
+
+
+    <div class="modal fade bd-example-modal-xl1" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Detalle de pedido</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Producto</th>
+                                <th>Medidas</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unit.</th>
+                                <th>SubTotal</th>
+                                <th>Estado</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detallpedido">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnagregarproducto" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Agregar producto</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--En este modal obtengo todos los productos mediante ajax y puedo agregar a mi pedido-->
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Detalle de pedido</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Producto</th>
+                                <th>Categoria</th>
+                                <th>Medidas</th>
+                                <th>Precio Unit.</th>
+                                <th>Descripción</th>
+                                <th> Opciones </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodylistaproductos">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/scriptsmaderera/Notificaciones.js"></script>
+<!-- CSS only -->
+<script>
+    var idpedido = 0;
+    $("body").on("click", ".eliminarpedido", function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        idpedido = $this.data("idpedido");
+
+        Swal.fire({
+            title: 'Estas seguro?',
+            text: "No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, eliminar pedido!'
+        }).then((result) => {
+            if (result.value) {
+                location.href = "/PedidoAdmin/Eliminar?idpedido=" + idpedido + "&&Vista=EnConstruccion";
+            }
+        })
+    });
+
+    $("body").on("click", ".finalizarconstruccionpedido", function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var idpedido = $this.data("idpedido");
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Estas seguro?',
+            text: "No podras revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, finalizar construcción!',
+            cancelButtonText: 'No, cancelar!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = "/PedidoAdmin/FinalizarConstruccion?idpedido=" + idpedido;
+            }
+        })
+    });
+
+    $("body").on("click", ".verdetallepedido", function (e) {
+        var $this = $(this)
+        e.preventDefault();
+        idpedido = $this.data("idpedido");
+
+        var request = $.ajax({
+            url: '/LlamadasAjax/ObtenerDetallePedidoAdmin?idpedido=' + idpedido
+        });
+        request.done(function (resp) {
+            $("#detallpedido").html(resp);
+        });
+
+    });
+
+    $("body").on("click", ".actualizarcantidaddetallepedido", function (e) {
+        var $this = $(this)
+        e.preventDefault();
+        var iddetallepedido = $this.data("iddetallepedido");
+        idpedido = $this.data("idpedido");
+
+        Swal.fire({
+            text: 'Actualizar cantidad de producto',
+            input: 'number'
+        }).then(function (result) {
+            if (result.value) {
+                const amount = result.value
+                if (amount > 0) {
+                    var request1 = $.ajax({
+                        url: '/LlamadasAjax/ActualizarCantidadDeDetallePedido?iddetallepedido=' + iddetallepedido + "&&cantidad=" + amount
+                    });
+                    request1.done(function (resp) {
+                        if (resp == true) {
+                            var request = $.ajax({
+                                url: '/LlamadasAjax/ObtenerDetallePedidoAdmin?idpedido=' + idpedido
+                            });
+                            request.done(function (resp) {
+                                $("#detallpedido").html(resp);
+
+                                var request3 = $.ajax({
+                                    url: '/LlamadasAjax/ObtenerPedidosEnConstruccionAdmin'
+                                });
+                                request3.done(function (resp) {
+                                    $("#tbodynuevospedidos").html(resp);
+                                });
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Se actualizo con exito'
+                                })
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Algo salio mal!',
+                                //footer: '<a href="">Why do I have this issue?</a>'
+                            })
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'La cantidad debe ser mayor a cero!'
+                        //footer: '<a href="">Why do I have this issue?</a>'
+                    })
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Asegurese de ingresar una cantidad!'
+                    //footer: '<a href="">Why do I have this issue?</a>'
+                })
+            }
+        })
+    });
+
+    $("body").on("click", ".eliminaritemdetallepedido", function (e) {
+        var $this = $(this)
+        e.preventDefault();
+        var iddetallepedido = $this.data("iddetallepedido");
+        idpedido = $this.data("idpedido");
+
+        Swal.fire({
+            title: 'Estas seguro?',
+            text: "No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, eliminar producto!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Se elimino con exito'
+                })
+
+                var request1 = $.ajax({
+                    url: '/LlamadasAjax/EliminarItemDetallePedido?iddetallepedido=' + iddetallepedido
+                });
+                request1.done(function (resp) {
+                    if (resp == true) {
+                        var request = $.ajax({
+                            url: '/LlamadasAjax/ObtenerDetallePedidoAdmin?idpedido=' + idpedido
+                        });
+                        request.done(function (resp) {
+                            $("#detallpedido").html(resp);
+
+                            var request3 = $.ajax({
+                                url: '/LlamadasAjax/ObtenerPedidosEnConstruccionAdmin'
+                            });
+                            request3.done(function (resp) {
+                                $("#tbodynuevospedidos").html(resp);
+                            });
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Se elimino con exito'
+                            })
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Algo salio mal!',
+                            //footer: '<a href="">Why do I have this issue?</a>'
+                        })
+                    }
+                });
+
+            }
+        })
+    });
+
+    $("#btnagregarproducto").click(function (e) {
+        e.preventDefault();
+        var request = $.ajax({
+            url: '/LlamadasAjax/ObtenerListaDeProductosParaAgregarAPedido'
+        });
+        request.done(function (resp) {
+            $("#tbodylistaproductos").html(resp);
+        });
+
+    });
+
+    $("body").on("click", ".agregarproductoapedido", function (e) {
+        var $this = $(this)
+        e.preventDefault();
+        var idproducto = $this.data("idproducto");
+
+        var request = $.ajax({
+            url: '/LlamadasAjax/AgregarProductoAPedido?idpedido=' + idpedido + '&&idproducto=' + idproducto
+        });
+        request.done(function (resp) {
+            if (resp == true) {
+                var request1 = $.ajax({
+                    url: '/LlamadasAjax/ObtenerDetallePedidoAdmin?idpedido=' + idpedido
+                });
+                request1.done(function (resp) {
+                    $("#detallpedido").html(resp);
+                });
+                var request3 = $.ajax({
+                    url: '/LlamadasAjax/ObtenerPedidosEnConstruccionAdmin'
+                });
+                request3.done(function (resp) {
+                    $("#tbodynuevospedidos").html(resp);
+                });
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Se agregó con exito'
+                })
+            }
+        });
+    });
+
+    $("body").on("click", ".actualizarporcentajeconstrucion", function (e) {
+        var $this = $(this)
+        e.preventDefault();
+        idpedido = $this.data("idpedido");
+
+        Swal.fire({
+            text: 'Actualizar porcentaje - solo de 0% - 100%',
+            input: 'number'
+        }).then(function (result) {
+            if (result.value) {
+                const amount = result.value
+                if (amount >= 0 && amount <= 100) {
+                    location.href = "/PedidoAdmin/CambiarPorcentajeConstruccion?idpedido=" + idpedido + "&&porcentaje=" + amount;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'La cantidad debe ser entre 0% - 100%!'
+                        //footer: '<a href="">Why do I have this issue?</a>'
+                    })
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Asegurese de ingresar una cantidad!'
+                    //footer: '<a href="">Why do I have this issue?</a>'
+                })
+            }
+        })
+    });
+
+</script>

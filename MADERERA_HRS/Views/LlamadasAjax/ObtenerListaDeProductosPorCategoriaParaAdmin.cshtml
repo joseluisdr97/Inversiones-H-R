@@ -1,0 +1,17 @@
+﻿
+@{Layout = null;}
+@foreach (var item in Model)
+{
+    <tr>
+        <td><img style="width:40px;height:55px" src="@item.Imagen" /> @*@item.Imagen*@</td>
+        <td>@item.Nombre</td>
+        <td>@item.Categoria.Nombre</td>
+        <td>@item.Medidas</td>
+        <td>@item.Precio</td>
+        <td>@item.Descripcion</td>
+        <td>
+            <a class="btn btn-info" href="/ProductoAdmin/Editar?id=@item.Id_Producto"><span class="glyphicon glyphicon-pencil"></span>Editar</a>
+            <a class="eliminar btn btn-danger" data-idproducto="@item.Id_Producto"><span class="glyphicon glyphicon-trash"></span>Eliminar</a>
+        </td>
+    </tr>
+}

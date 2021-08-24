@@ -1,0 +1,14 @@
+﻿@{Layout = null;}
+@foreach (var item in Model)
+{
+    <tr>
+        <td><img style="width:40px;height:55px" src="@item.Producto.Imagen" /></td>
+        <td>@item.Producto.Nombre</td>
+        <td>@item.Producto.Medidas</td>
+        <td>
+            @item.Cantidad
+        </td>
+        <td>@item.Precio</td>
+        <td>@item.Sub_Total</td>
+    </tr>
+}

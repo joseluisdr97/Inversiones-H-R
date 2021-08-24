@@ -1,0 +1,17 @@
+﻿@{Layout = null;}
+@foreach (var item in ViewBag.carritodecotizaciones)
+{
+    <tr>
+        <td><img style="width:40px;height:55px" src="@item.Imagen" /></td>
+        <td>@item.Producto</td>
+        <td>
+            @item.Cantidad
+            <a class="actualizarcantidadcotizacion btn btn-warning" data-idcarritocotizacion="@item.Id_Carrito_Cotizacion"><span class="glyphicon glyphicon-refresh"></span>@*Eliminar*@</a>
+        </td>
+        <td>@item.Medidas</td>
+        <td>@item.Descripcion</td>
+        <td>
+            <a class="eliminaritemcarritocotizacion btn btn-danger" data-idcarritocotizacion="@item.Id_Carrito_Cotizacion"><span class="glyphicon glyphicon-trash"></span>Eliminar</a>
+        </td>
+    </tr>
+}

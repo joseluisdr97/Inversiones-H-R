@@ -1,0 +1,120 @@
+﻿
+@{ Layout = "Layout_Admin"; }
+
+<footer>
+    <div class="container">
+        <h1>Productos - Editar Imagen</h1>
+        <br />
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2">
+                <div><br /></div>
+                <div>
+                    <img style="" alt="Silverfox" class="img-fluid" src="@ViewBag.Imagen" />
+                    <br />
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6"><img style="" alt="Silverfox" class="img-fluid" src="@ViewBag.Imagen1" /></div>
+                        <div class="col-md-6"><img style="" alt="Silverfox" class="img-fluid" src="@ViewBag.Imagen2" /></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <form action="/ProductoAdmin/EditarImagen?id=@Model" method="post" enctype="multipart/form-data">
+                    <div>
+                        <h5 class="control-label">Imagen principal a cambiar</h5>
+                        <input class="form-control" accept="image,jpg,png" type="file" name="file" required id="imagedoc" />
+                        <span class="text-danger">@Html.ValidationMessage("Imagen")</span>
+                    </div>
+                    <br />
+                    <div>
+                        <h6 class="control-label">Imagen secundaria 1 a cambiar</h6>
+                        <input class="form-control" accept="image,jpg,png" type="file" name="file1" required id="imagedoc" />
+                        <span class="text-danger">@Html.ValidationMessage("Imagen1")</span>
+                    </div>
+                    <br />
+                    <div>
+                        <h6 class="control-label">Imagen secundaria 2 a cambiar</h6>
+                        <input class="form-control" accept="image,jpg,png" type="file" name="file2" required id="imagedoc" />
+                        <span class="text-danger">@Html.ValidationMessage("Imagen2")</span>
+                    </div>
+                    <br />
+                    <div>
+                        <button class="btn btn-primary pull-right"><span class="glyphicon glyphicon-saved"></span> Guardar Cambios</button>
+                        <a class=" btn btn-danger pull-right" href="/ProductoAdmin/Index"><span class="glyphicon glyphicon-circle-arrow-left"></span>Volver</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/scriptsmaderera/Notificaciones.js"></script>
+<script type="text/javascript">
+    (function () {
+        function filePreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imagePreview').html("<img src='" + e.target.result + "' />");
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $('#imagedoc').change(function (el) {
+            if (LimitAttach(this, 1))
+                filePreview(this);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    function LimitAttach(tField, iType) {
+        file = tField.value;
+        if (iType == 1) {
+            extArray = new Array(".jpeg", ".jpe", ".gif", ".jpg", ".png");
+        }
+        allowSubmit = false;
+        if (!file) return false;
+        while (file.indexOf("\\") != -1) file = file.slice(file.indexOf("\\") + 1);
+        ext = file.slice(file.indexOf(".")).toLowerCase();
+        for (var i = 0; i < extArray.length; i++) {
+            if (extArray[i] == ext) {
+                allowSubmit = true;
+                break;
+            }
+        }
+        if (allowSubmit) {
+            return true
+        } else {
+            tField.value = "";
+            alert("Usted sólo puede subir archivos con extensiones " + (extArray.join(" ")) + "\n Reiniciando Formulario");
+            return false;
+            setTimeout("location.reload()", 2000);
+        }
+    }
+</script>

@@ -1,0 +1,58 @@
+﻿
+@{ Layout = "Layout_Admin"; }
+@model Categoria
+
+<footer>
+    <div class="container">
+        <h1>Categoria - Registrar categoria</h1>
+        <br />
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+
+
+                <form action="/CategoriaAdmin/Crear" method="post">
+                    <div>
+                        <label class="control-label">Nombre</label>
+                        <input class="form-control" type="text" asp-for="Nombre" placeholder="Ingrese nombre" />
+                        <span class="text-danger">@Html.ValidationMessage("Nombre")</span>
+                    </div>
+                    <div>
+                        <label class="control-label">Descripción</label>
+                        <textarea class="form-control" asp-for="Descripcion" placeholder="Ingrese Descripción"></textarea>
+                        <span class="text-danger">@Html.ValidationMessage("Descripcion")</span>
+                    </div>
+                    <br />
+                    <div>
+                        <a class=" btn btn-danger" href="/CategoriaAdmin/Index"><span class="glyphicon glyphicon-circle-arrow-left"></span>Volver</a>
+                        <button class="btn btn-primary"><span class="glyphicon glyphicon-saved"></span> Guardar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/scriptsmaderera/Notificaciones.js"></script>

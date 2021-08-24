@@ -1,0 +1,115 @@
+﻿
+@{ Layout = "Layout_Admin"; }
+
+
+<footer>
+    <h1>Administradores</h1>
+    <br />
+    <br />
+    <form action="/Administrador/Index" method="get">
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="query" placeholder="Ingrese DNI" />
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary">Buscar</button>
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-2">
+                <a class="btn btn-primary pull-right" href="/Administrador/Crear"><span class="glyphicon glyphicon-plus"></span> Crear</a>
+            </div>
+        </div>
+    </form>
+    <br />
+    <div class="container">
+        <table class="table container">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>DNI</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><img style="width:40px;height:55px" src="@item.Imagen" /> @*@item.Imagen*@</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.DNI</td>
+                        <td>@item.Direccion</td>
+                        <td>@item.Telefono</td>
+                        <td>@item.Correo</td>
+                        <td>
+                            <a class="eliminar btn btn-danger" data-idusuario="@item.Id_Usuario"><span class="glyphicon glyphicon-trash"></span>Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/scriptsmaderera/Notificaciones.js"></script>
+<script>
+
+    $("body").on("click", ".eliminar", function (e) {
+        e.preventDefault();
+        var $this = $(this);
+
+
+        var idusuario = $this.data("idusuario");
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: "No podras revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, eliminar!'
+        }).then((result) => {
+            if (result.value) {
+                location.href = "/Administrador/Eliminar?id=" + idusuario;
+            }
+        })
+    });
+
+</script>

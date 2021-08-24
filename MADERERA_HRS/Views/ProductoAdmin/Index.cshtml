@@ -1,0 +1,139 @@
+﻿
+@{ Layout = "Layout_Admin"; }
+
+
+<footer>
+    <h1>Productos</h1>
+    <br />
+    <br />
+    <form action="/ProductoAdmin/Index" method="get">
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="query" placeholder="Ingrese nombre" />
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary">Buscar</button>
+            </div>
+            <div class="col-md-3">
+                <select id="Categoria" name="Id_Categoria" class="form-control">
+                    <option value="0">--  Seleccione categoría  --</option>
+                    @foreach (var categoria in ViewBag.Categorias)
+                    {
+                        <option value="@categoria.Id_Categoria">@categoria.Nombre</option>
+                    }
+                </select>
+            </div>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-2">
+                <a class="btn btn-primary pull-right" href="/ProductoAdmin/Crear"><span class="glyphicon glyphicon-plus"></span> Crear</a>
+            </div>
+        </div>
+    </form>
+    <br />
+    <div class="container">
+        <table class="table container">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Categoria</th>
+                    <th>Medidas</th>
+                    <th>Precio Unit.</th>
+                    <th>Descripción</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><img style="width:40px;height:55px" src="@item.Imagen" /> @*@item.Imagen*@</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Categoria.Nombre</td>
+                        <td>@item.Medidas</td>
+                        <td>@item.Precio</td>
+                        <td>@item.Descripcion</td>
+                        <td>
+                            <a class="btn btn-info" href="/ProductoAdmin/Editar?id=@item.Id_Producto"><span class="glyphicon glyphicon-pencil"></span>Editar</a>
+                            <a class="eliminar btn btn-danger" data-idproducto="@item.Id_Producto"><span class="glyphicon glyphicon-trash"></span>Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/scriptsmaderera/Notificaciones.js"></script>
+<script>
+
+    $("#Categoria").change(function () {
+        var request2 = $.ajax({
+            url: '/LlamadasAjax/ObtenerListaDeProductosPorCategoriaParaAdmin?id=' + $('#Categoria').val(),
+            type: 'GET'
+        });
+
+        request2.done(function (respuesta) {
+            $('#tbody').html(respuesta);
+        });
+    });
+
+
+    $("body").on("click", ".eliminar", function (e) {
+        e.preventDefault();
+        var $this = $(this);
+
+
+        var idproducto = $this.data("idproducto");
+        //var fec = $this.data("nombre");
+
+
+        //alert($this.attr("id"));//obtener el atributo id
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: "No podras revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, eliminar!'
+        }).then((result) => {
+            if (result.value) {
+                location.href = "/ProductoAdmin/Eliminar?id=" + idproducto;
+            }
+        })
+    });
+
+</script>

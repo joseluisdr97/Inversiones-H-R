@@ -1,0 +1,247 @@
+﻿
+@{ Layout = "Layout_Admin"; }
+
+@model Pedido_Presencial
+<footer>
+    <h1>Crear pedido</h1>
+    <br />
+
+    <br />
+    <a class=" btn btn-danger" href="/PedidoPresencial/AgregarProductoACarrito"><span class="glyphicon glyphicon-circle-arrow-left"></span>Volver</a>
+    <h4><label class="control-label">INGRESE DATOS DEL CLIENTE</label></h4>
+
+    <form action="/PedidoPresencial/CrearPedido" method="post" style="margin-top:5px">
+        <div class="row">
+            <div class="col-md-6">
+                <div>
+                    <input type="text" asp-for="Cliente" class="form-control" placeholder="Ingrese nombre del cliente" required />
+                    <span class="text-danger">@Html.ValidationMessage("Cliente")</span>
+                </div>
+                <br />
+                <div>
+                    <input type="text" asp-for="DNI" class="form-control" placeholder="Ingrese DNI o RUC del cliente" required />
+                    <span class="text-danger">@Html.ValidationMessage("DNI")</span>
+                </div>
+                <br />
+                <div>
+                    <input type="text" asp-for="Telefono_Comunicacion" class="form-control" placeholder="Ingrese teléfono del cliente" required />
+                    <span class="text-danger">@Html.ValidationMessage("Telefono_Comunicacion")</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div>
+                    <h6>Ingrese una fecha aproximada a entregar pedido</h6>
+                    <input type="date" asp-for="Fecha_Entrega_Solicitada" id="fechaActual" class="form-control" placeholder="Ingrese cantidad de productos que desea" />
+                    <span class="text-danger">@Html.ValidationMessage("Fecha_Entrega_Solicitada")</span>
+                </div>
+                <br />
+                <div>
+                    <input type="text" asp-for="Direccion_Entrega" class="form-control" placeholder="Ingrese una dirección donde se entregará el pedido" required />
+                    <span class="text-danger">@Html.ValidationMessage("Direccion_Entrega")</span>
+                </div>
+            </div>
+            <h5><label class="control-label">Lista de productos de pedido </label></h5>
+            <table class="table table-bordered" style="margin-top:5px">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Medidas</th>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unit.</th>
+                        <th>SubTotal</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodycarritopedidopresencial">
+                    @foreach (var item in ViewBag.Carrito_Pedidos)
+                    {
+                        <tr>
+                            <td>@item.Producto</td>
+                            <td>@item.Medidas</td>
+                            <td>@item.Descripcion</td>
+                            <td>
+                                @item.Cantidad
+                                <a class="actualizarcantidaditemcarrito btn btn-warning" data-idcarritopedido="@item.Id_Carrito_Pedido_Presencial"><span class="glyphicon glyphicon-refresh"></span>@*Eliminar*@</a>
+                            </td>
+                            <td>@item.Precio</td>
+                            <td>@item.Sub_Total</td>
+                            <td>
+                                <a class="eliminaritemcarrito btn btn-danger" data-idcarritopedido="@item.Id_Carrito_Pedido_Presencial"><span class="glyphicon glyphicon-trash"></span>Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="container">
+                <br />
+                <button class="btn btn-warning pull-right" style="height:60px;margin-left:70%"><span class="glyphicon glyphicon-play-circle"></span>  Confirmar registro de pedido</button>
+            </div>
+        </div>
+    </form>
+    <br />
+    <div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/scriptsmaderera/Notificaciones.js"></script>
+<script>
+
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+    $("#fechaActual").attr("min", today);
+    $("#fechaActual").val(today);
+
+    $("body").on("click", ".eliminaritemcarrito", function (e) {
+        var $this = $(this)
+        e.preventDefault();
+        var idcarritopedido = $this.data("idcarritopedido");
+
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: "No podras revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, eliminar producto!'
+        }).then((result) => {
+            if (result.value) {
+                var request1 = $.ajax({
+                    url: '/LlamadasAjax/EliminaritemCarritoPedidoPresencial?idcarritopedido=' + idcarritopedido
+                });
+                request1.done(function (resp) {
+                    if (resp == true) {
+                        var request = $.ajax({
+                            url: '/LlamadasAjax/ObtenerListaDeProductosDeCarritoPedidoPresencial'
+                        });
+                        request.done(function (resp) {
+                            $("#tbodycarritopedidopresencial").html(resp);
+
+
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Se elimino con exito'
+                            })
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Algo salio mal!',
+                            //footer: '<a href="">Why do I have this issue?</a>'
+                        })
+                    }
+                });
+            }
+        })
+    });
+
+    $("body").on("click", ".actualizarcantidaditemcarrito", function (e) {
+        var $this = $(this)
+        e.preventDefault();
+        var idcarritopedido = $this.data("idcarritopedido");
+
+        Swal.fire({
+            text: 'Actualizar cantidad de producto',
+            input: 'number'
+        }).then(function (result) {
+            if (result.value) {
+                const amount = result.value
+                if (amount > 0) {
+                    var request1 = $.ajax({
+                        url: '/LlamadasAjax/ActualizarCantidadCarritoPedidoPresencial?idcarritopedido=' + idcarritopedido + "&&cantidad=" + amount
+                    });
+                    request1.done(function (resp) {
+                        if (resp == true) {
+                            var request = $.ajax({
+                                url: '/LlamadasAjax/ObtenerListaDeProductosDeCarritoPedidoPresencial'
+                            });
+                            request.done(function (resp) {
+                                $("#tbodycarritopedidopresencial").html(resp);
+
+
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Se actualizo con exito'
+                                })
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Algo salio mal!',
+                                //footer: '<a href="">Why do I have this issue?</a>'
+                            })
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'La cantidad debe ser mayor a cero!'
+                        //footer: '<a href="">Why do I have this issue?</a>'
+                    })
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Asegurese de ingresar una cantidad!'
+                    //footer: '<a href="">Why do I have this issue?</a>'
+                })
+            }
+        })
+    });
+</script>

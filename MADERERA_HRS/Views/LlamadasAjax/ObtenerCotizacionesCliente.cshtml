@@ -1,0 +1,86 @@
+﻿@{ Layout = null;}
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Fecha</td>
+        @if (item.Id_Estado != 3)
+        {
+            if (item.Id_Estado != 6)
+            {
+                <td>@item.Fecha_Entrega_Solicitada</td>
+                <td>@item.Direccion_Entrega</td>
+                <td>@item.Telefono_Comunicacion</td>
+            }
+            else
+            {
+                <td>...</td>
+                <td>...</td>
+                <td>...</td>
+            }
+
+            <td>@item.Total</td>
+        }
+        else
+        {
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+        }
+
+        @*<td>@item.Estado.Nombre</td>*@
+        <td>
+            @if (item.Id_Estado == 3)
+            {
+                <span class="label label-default" style="background-color:yellow;color:black;margin-right:10px"><a style="color:black" href="/Home/MisCotizaciones?idestado=3">@item.Estado.Nombre</a></span>
+            }
+            @if (item.Id_Estado == 6)
+            {
+                <span class="label label-default" style="background-color:green;color:black;margin-right:10px"><a style="color:black" href="/Home/MisCotizaciones?idestado=6">@item.Estado.Nombre</a></span>
+            }
+            @if (item.Id_Estado == 1)
+            {
+                <span class="label label-default" style="background-color:blueviolet;color:black;margin-right:10px"><a style="color:black" href="/Home/MisCotizaciones?idestado=1">@item.Estado.Nombre</a></span>
+            }
+            @if (item.Id_Estado == 2)
+            {
+                <span class="label label-default" style="background-color:chocolate;color:black;margin-right:10px"><a style="color:black" href="/Home/MisCotizaciones?idestado=2">@item.Estado.Nombre</a></span>
+            }
+            @if (item.Id_Estado == 4)
+            {
+                <span class="label label-default" style="background-color:darkorange;color:black;margin-right:10px"><a style="color:black" href="/Home/MisCotizaciones?idestado=4">Construido</a></span>
+            }
+            @if (item.Id_Estado == 5)
+            {
+                <span class="label label-default" style="background-color:Highlight;color:black;margin-right:10px"><a style="color:black" href="/Home/MisCotizaciones?idestado=5">Recibido</a></span>
+            }
+        </td>
+        @if (item.Id_Estado != 3 && item.Id_Estado != 6)
+        {
+            <td>
+                @{string a = "";
+                    a = Convert.ToString(item.Avance + "%");
+                }
+                <div class="progress">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: @a" aria-valuenow="@item.Avance" aria-valuemin="0" aria-valuemax="100">@a</div>
+                </div>
+            </td>
+        }
+        else
+        {
+            <td>...</td>
+        }
+
+        <td>
+            <a class="verdetallecotizacion btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lg2" data-idcotizacion="@item.Id_Cotizacion"><span class="glyphicon glyphicon-eye-open"></span> Ver productos</a>
+            @if (item.Id_Estado == 1 || item.Id_Estado == 3 || item.Id_Estado == 6)
+            {
+                <a class="eliminarcotizacion btn btn-danger" data-toggle="modal" data-target=".bd-example-modal-lg1" data-idcotizacion="@item.Id_Cotizacion"><span class="glyphicon glyphicon-trash"></span></a>
+            }
+            @if (item.Id_Estado == 6)
+            {
+                <button type="button" class="registrarcomopedido btn btn-primary" style="margin-top:2px" data-toggle="modal" data-target="#exampleModal" data-idcotizacion="@item.Id_Cotizacion"><span class="glyphicon glyphicon-save"></span> Registrar como pedido</button>
+            }
+        </td>
+    </tr>
+}

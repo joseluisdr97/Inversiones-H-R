@@ -1,0 +1,14 @@
+﻿@{Layout = null;}
+@foreach (var item in Model)
+{
+    <li class="nav-item">
+        <a class="dropdown-item">
+            <span>
+                <span>@item.Usuario.Nombre <span class="font-weight-light">@item.Fecha_Hora</span></span><span class="pull-right"><button data-idnotificacion="@item.Id_Notificacion" class="btneliminarnotificacion btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></span>
+            </span>
+            <span class="message">
+                @item.Mensaje 
+            </span>
+        </a>
+    </li>
+}

@@ -1,0 +1,18 @@
+﻿@{Layout = null;}
+@foreach (var item in Model)
+{
+    <tr>
+        <td><img style="width:40px;height:55px" src="@item.Producto.Imagen" /></td>
+        <td>@item.Producto.Nombre</td>
+        <td>@item.Producto.Medidas</td>
+        <td>
+            @item.Cantidad
+            <a class="actualizarcantidaddetallepedido btn btn-warning" data-idpedido="@item.Id_Pedido" data-iddetallepedido="@item.Id_Detalle_Pedido"><span class="glyphicon glyphicon-refresh"></span></a>
+        </td>
+        <td>@item.Precio</td>
+        <td>@item.Sub_Total</td>
+        <td>
+            <a class="eliminaritemdetallepedido btn btn-danger" data-idpedido="@item.Id_Pedido" data-iddetallepedido="@item.Id_Detalle_Pedido"><span class="glyphicon glyphicon-trash"></span>@*Eliminar*@</a>
+        </td>
+    </tr>
+}

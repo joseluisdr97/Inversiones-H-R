@@ -1,0 +1,145 @@
+﻿@{ Layout = "Layout_Admin"; }
+
+
+<footer>
+    <h1>Pedidos entregados</h1>
+    <br />
+    <br />
+    <form action="/PedidoAdmin/Entregados" method="get">
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="query" placeholder="Ingrese DNI" />
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary">Buscar</button>
+            </div>
+            <div class="col-sm-2"></div>
+            @*<div class="col-sm-2">
+                    <a class="btn btn-primary pull-right" href="/ProductoAdmin/Crear"><span class="glyphicon glyphicon-plus"></span> Crear</a>
+                </div>*@
+        </div>
+    </form>
+    <br />
+    <div class="container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Teléfono-comunicación</th>
+                    <th>Fecha</th>
+                    <th>Fecha-E-Solicitada</th>
+                    <th>Dirección entrega</th>
+                    <th>Total</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbodynuevospedidos">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Usuario.DNI</td>
+                        <td>@item.Usuario.Nombre</td>
+                        <td>@item.Telefono_Comunicacion</td>
+                        <td>@item.Fecha</td>
+                        <td>@item.Fecha_Entrega_Solicitada</td>
+                        <td>@item.Direccion_Entrega</td>
+                        <td>@item.Total</td>
+                        <td>
+                            <a class="verdetallepedido btn btn-success" data-idpedido="@item.Id_Pedido" data-toggle="modal" data-target=".bd-example-modal-xl1"><span class="glyphicon glyphicon-eye-open"></span> Ver productos</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!--Modal para mostrar el detalle de mi pedido que estoy seleccionando------------------->
+    <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+
+    <!-- Extra large modal -->
+
+
+    <div class="modal fade bd-example-modal-xl1" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Detalle de pedido</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Producto</th>
+                                <th>Medidas</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unit.</th>
+                                <th>SubTotal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detallpedido">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/scriptsmaderera/Notificaciones.js"></script>
+<!-- CSS only -->
+<script>
+    var idpedido = 0;
+
+    $("body").on("click", ".verdetallepedido", function (e) {
+        var $this = $(this)
+        e.preventDefault();
+        idpedido = $this.data("idpedido");
+
+        var request = $.ajax({
+            url: '/LlamadasAjax/ObtenerDetallePedidoEntregadoAdmin?idpedido=' + idpedido
+        });
+        request.done(function (resp) {
+            $("#detallpedido").html(resp);
+        });
+    });
+</script>

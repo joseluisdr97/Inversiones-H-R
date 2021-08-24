@@ -1,0 +1,112 @@
+﻿
+@{ Layout = "Layout_Admin"; }
+
+
+<footer>
+    <h1>Categorias</h1>
+    <br />
+    <br />
+    <form action="/CategoriaAdmin/Index" method="get">
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="query" placeholder="Ingrese nombre" />
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary">Buscar</button>
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-2">
+                <a class="btn btn-primary pull-right" href="/CategoriaAdmin/Crear"><span class="glyphicon glyphicon-plus"></span> Crear</a>
+            </div>
+        </div>
+    </form>
+    <br />
+    <div class="container">
+        <table class="table container">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Nombre</td>
+                        <td>@item.Descripcion</td>
+                        <td>
+                            <a class="btn btn-info" href="/CategoriaAdmin/Editar?id=@item.Id_Categoria"><span class="glyphicon glyphicon-pencil"></span>Editar</a>
+                            <a class="eliminar btn btn-danger" data-idcategoria="@item.Id_Categoria"><span class="glyphicon glyphicon-trash"></span>Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/scriptsmaderera/Notificaciones.js"></script>
+<script>
+
+    $("body").on("click", ".eliminar", function (e) {
+        e.preventDefault();
+        var $this = $(this);
+
+
+        var idcategoria = $this.data("idcategoria");
+        //var fec = $this.data("nombre");
+
+
+        //alert($this.attr("id"));//obtener el atributo id
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: "No podras revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, eliminar!'
+        }).then((result) => {
+            if (result.value) {
+                location.href = "/CategoriaAdmin/Eliminar?id=" + idcategoria;
+            }
+        })
+    });
+
+</script>

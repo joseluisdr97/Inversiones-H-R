@@ -1,0 +1,36 @@
+﻿@{Layout = null;}
+<div class="row">
+    <div class="col-md-4">
+        <div>
+            <img style="width:250px;height:350px" @*alt="Silverfox"*@ @*class="img-fluid"*@ src="@Model.Imagen"/>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div>
+            <label class="control-label">Nombre</label>
+            <h4 class="control-label">@Model.Nombre</h4>
+            <br />
+        </div>
+        <div>
+            <label class="control-label">Categoria</label>
+            <h4 class="control-label">@Model.Categoria.Nombre</h4>
+            <br />
+        </div>
+        <div>
+            <label class="control-label">Medidas</label>
+            <h4 class="control-label">@Model.Medidas</h4>
+            <br />
+        </div>
+        <div>
+            <label class="control-label">Precio</label>
+            <h4 class="control-label">@Model.Precio soles</h4>
+            <br />
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div>
+            <label class="control-label">Descripción</label>
+            <h3 class="control-label">@Model.Descripcion</h3>
+        </div>
+    </div>
+</div>

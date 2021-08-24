@@ -1,0 +1,36 @@
+﻿@{Layout = null;}
+@foreach (var item in Model)
+{
+<tr>
+    <td><img style="width:40px;height:55px" src="@item.Imagen" /></td>
+    <td>@item.Producto</td>
+    <td>@item.Medidas</td>
+    <td>
+        @item.Cantidad
+        @if (item.Cotizacion.Id_Estado == 1 || item.Cotizacion.Id_Estado == 3 || item.Cotizacion.Id_Estado == 6)
+        {
+            <a class="actualizarcantidaddetallecotizacion btn btn-warning" data-idcotizacion="@item.Id_Cotizacion" data-iddetallecotizacion="@item.Id_Detalle_Cotizacion"><span class="glyphicon glyphicon-refresh"></span></a>
+        }
+    </td>
+    @if (item.Cotizacion.Id_Estado == 3)
+    {
+        <td>@item.Estado.Nombre</td>
+        <td>@item.Estado.Nombre</td>
+    }
+    else
+    {
+        <td>@item.Precio</td>
+        <td>@item.Sub_Total</td>
+    }
+    <td>@item.Estado.Nombre</td>
+    <td>
+        @if (item.Cotizacion.Id_Estado == 1 || item.Cotizacion.Id_Estado == 3 || item.Cotizacion.Id_Estado == 6)
+        {
+            <a class="eliminaritemdetallecotizacion btn btn-danger" data-idcotizacion="@item.Id_Cotizacion" data-iddetallecotizacion="@item.Id_Detalle_Cotizacion"><span class="glyphicon glyphicon-trash"></span>@*Eliminar*@</a>
+        }
+        else
+        { <label>...</label>}
+
+    </td>
+</tr>
+}

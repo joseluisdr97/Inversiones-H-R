@@ -1,0 +1,32 @@
+﻿@{Layout = null;}
+@foreach (var item in Model)
+{
+    <tr>
+        <td><img style="width:40px;height:55px" src="@item.Producto.Imagen" /></td>
+        <td>@item.Producto.Nombre</td>
+        <td>@item.Producto.Medidas</td>
+        <td>
+            @item.Cantidad
+            @if (item.Pedido.Id_Estado == 1)
+            {
+                <a class="actualizarcantidaddetallepedido btn btn-warning" data-idpedido="@item.Id_Pedido" data-iddetallepedido="@item.Id_Detalle_Pedido"><span class="glyphicon glyphicon-refresh"></span></a>
+            }
+        </td>
+        <td>@item.Precio</td>
+        <td>@item.Sub_Total</td>
+        <td>@item.Estado.Nombre</td>
+        <td>
+            @if (item.Pedido.Id_Estado == 1)
+            {
+                <a class="eliminaritemdetallepedido btn btn-danger" data-idpedido="@item.Id_Pedido" data-iddetallepedido="@item.Id_Detalle_Pedido"><span class="glyphicon glyphicon-trash"></span>@*Eliminar*@</a>
+            }
+            @*else
+            { <label>x</label>}*@
+            @if (item.Pedido.Id_Estado == 5)
+            {
+                <a class="calificarproducto btn btn-warning" data-idpedido="@item.Id_Pedido" data-iddetallepedido="@item.Id_Detalle_Pedido"><span class="glyphicon glyphicon-star"></span> Calificar</a>
+                @*<a target="_blank" href="/Home/DetalleProducto?idproducto=@item.Producto.Id_Producto" style="margin-top:7px" class="btn btn-primary"><span class="glyphicon glyphicon-comment"></span> Comentar</a>*@
+            }
+        </td>
+    </tr>
+}

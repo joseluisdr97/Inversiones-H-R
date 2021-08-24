@@ -1,0 +1,18 @@
+﻿@{ Layout = null;}
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.DNI</td>
+        <td>@item.Cliente</td>
+        <td>@item.Telefono_Comunicacion</td>
+        <td>@item.Fecha</td>
+        <td>@item.Fecha_Entrega_Solicitada</td>
+        <td>@item.Direccion_Entrega</td>
+        <td>@item.Total</td>
+        <td>
+            <a class="iniciarcontruccionpedido btn btn-warning" data-idpedido="@item.Id_Pedido_Presencial"><span class="glyphicon glyphicon-play"></span>Iniciar construcción</a>
+            <a class="verdetallepedido btn btn-success" data-idpedido="@item.Id_Pedido_Presencial" data-toggle="modal" data-target=".bd-example-modal-xl1"><span class="glyphicon glyphicon-eye-open"></span> Ver productos</a>
+            <a class="eliminarpedido btn btn-danger" data-idpedido="@item.Id_Pedido_Presencial"><span class="glyphicon glyphicon-trash"></span>Eliminar</a>
+        </td>
+    </tr>
+}

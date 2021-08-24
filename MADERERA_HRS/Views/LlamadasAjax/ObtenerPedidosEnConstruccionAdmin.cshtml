@@ -1,0 +1,28 @@
+﻿@{Layout = null;}
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Usuario.DNI</td>
+        <td>@item.Usuario.Nombre</td>
+        <td>@item.Telefono_Comunicacion</td>
+        <td>@item.Fecha</td>
+        <td>@item.Fecha_Entrega_Solicitada</td>
+        <td>@item.Direccion_Entrega</td>
+        <td>@item.Total</td>
+        <td>
+            @{string a = "";
+                a = Convert.ToString(item.Avance + "%");
+            }
+            <div class="progress">
+                <div class="progress-bar bg-primary" role="progressbar" style="width: @a" aria-valuenow="@item.Avance" aria-valuemin="0" aria-valuemax="100">@a</div>
+            </div>
+            <br />
+            <a class="actualizarporcentajeconstrucion btn btn-warning" data-idpedido="@item.Id_Pedido"><span class="glyphicon glyphicon-refresh"></span></a>
+        </td>
+        <td>
+            <a class="finalizarconstruccionpedido btn btn-warning" data-idpedido="@item.Id_Pedido"><span class="glyphicon glyphicon-play"></span>Finalizar construcción</a>
+            <a class="verdetallepedido btn btn-success" data-idpedido="@item.Id_Pedido" data-toggle="modal" data-target=".bd-example-modal-xl1"><span class="glyphicon glyphicon-eye-open"></span> Ver productos</a>
+            <a class="eliminarpedido btn btn-danger" data-idpedido="@item.Id_Pedido"><span class="glyphicon glyphicon-trash"></span>Eliminar</a>
+        </td>
+    </tr>
+}

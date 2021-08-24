@@ -1,0 +1,432 @@
+﻿ @{ Layout = "Layout_Admin"; }
+
+
+<footer>
+    <h1>Nuevos pedidos presenciales</h1>
+    <br />
+    <br />
+    <form action="/PedidoPresencial/Nuevos" method="get">
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="query" placeholder="Ingrese DNI" />
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary">Buscar</button>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    </form>
+    <br />
+    @if (TempData["Seagregoconexito"] != null)
+    {
+        <p class="text-danger">@TempData["Seagregoconexito"]</p>
+    }
+    <div class="container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Teléfono-comunicación</th>
+                    <th>Fecha</th>
+                    <th>Fecha-Entrega</th>
+                    <th>Dirección entrega</th>
+                    <th>Total</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbodynuevospedidos">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.DNI</td>
+                        <td>@item.Cliente</td>
+                        <td>@item.Telefono_Comunicacion</td>
+                        <td>@item.Fecha</td>
+                        <td>@item.Fecha_Entrega_Solicitada</td>
+                        <td>@item.Direccion_Entrega</td>
+                        <td>@item.Total</td>
+                        <td>
+                            <a class="iniciarcontruccionpedido btn btn-warning" data-idpedido="@item.Id_Pedido_Presencial"><span class="glyphicon glyphicon-play"></span>Iniciar construcción</a>
+                            <a class="verdetallepedido btn btn-success" data-idpedido="@item.Id_Pedido_Presencial" data-toggle="modal" data-target=".bd-example-modal-xl1"><span class="glyphicon glyphicon-eye-open"></span> Ver productos</a>
+                            <a class="eliminarpedido btn btn-danger" data-idpedido="@item.Id_Pedido_Presencial"><span class="glyphicon glyphicon-trash"></span>Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!--Modal para mostrar el detalle de mi pedido que estoy seleccionando------------------->
+    <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+
+    <!-- Extra large modal -->
+
+
+    <div class="modal fade bd-example-modal-xl1" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Detalle de pedido</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Medidas</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unit.</th>
+                                <th>SubTotal</th>
+                                <th>Descripción</th>
+                                @*<th>Estado</th>*@
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detallpedido">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnagregarproducto" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Agregar producto</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--En este modal obtengo todos los productos mediante ajax y puedo agregar a mi pedido-->
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalbodyagregarproducto">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/scriptsmaderera/Notificaciones.js"></script>
+<!-- CSS only -->
+
+<script>
+
+
+    //LO DE ARRIBA ES SOLO DE NOTIFICACIONES
+    var idpedido = 0;
+    $("body").on("click", ".eliminarpedido", function (e) {
+        e.preventDefault();
+        var $this = $(this);
+         idpedido = $this.data("idpedido");
+
+        Swal.fire({
+            title: 'Estas seguro?',
+            text: "No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, eliminar pedido!'
+        }).then((result) => {
+            if (result.value) {
+                location.href = "/PedidoPresencial/Eliminar?idpedido=" + idpedido+"&&Vista=Nuevos";
+            }
+        })
+    });
+
+    $("body").on("click", ".iniciarcontruccionpedido", function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var idpedido = $this.data("idpedido");
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Estas seguro?',
+            text: "No podras revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, iniciar construcción!',
+            cancelButtonText: 'No, cancelar!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = "/PedidoPresencial/IniciarConstruccion?idpedido=" + idpedido;
+            }
+        })
+    });
+
+    $("body").on("click", ".verdetallepedido", function (e) {
+        var $this = $(this)
+        e.preventDefault();
+         idpedido = $this.data("idpedido");
+
+        var request = $.ajax({
+            url: '/LlamadasAjax/ObtenerDetallePedidoPresencialAdmin?idpedido=' + idpedido
+        });
+        request.done(function (resp) {
+            $("#detallpedido").html(resp);
+        });
+
+    });
+
+    $("body").on("click", ".actualizarcantidaddetallepedido", function (e) {
+        var $this = $(this)
+        e.preventDefault();
+        var iddetallepedido = $this.data("iddetallepedido");
+         idpedido = $this.data("idpedido");
+
+        Swal.fire({
+            text: 'Actualizar cantidad de producto',
+            input: 'number'
+        }).then(function (result) {
+            if (result.value) {
+                const amount = result.value
+                if (amount > 0) {
+                    var request1 = $.ajax({
+                        url: '/LlamadasAjax/ActualizarCantidadDeDetallePedidoPresencialAdmin?iddetallepedido=' + iddetallepedido + "&&cantidad=" + amount
+                    });
+                    request1.done(function (resp) {
+                        if (resp == true) {
+                            var request = $.ajax({
+                                url: '/LlamadasAjax/ObtenerDetallePedidoPresencialAdmin?idpedido=' + idpedido
+                            });
+                            request.done(function (resp) {
+                                $("#detallpedido").html(resp);
+
+                                var request3 = $.ajax({
+                                    url: '/LlamadasAjax/ObtenerPedidosPresencialesNuevosAdmin'
+                                });
+                                request3.done(function (resp) {
+                                    $("#tbodynuevospedidos").html(resp);
+                                });
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Se actualizo con exito'
+                                })
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Algo salio mal!',
+                                //footer: '<a href="">Why do I have this issue?</a>'
+                            })
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'La cantidad debe ser mayor a cero!'
+                        //footer: '<a href="">Why do I have this issue?</a>'
+                    })
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Asegurese de ingresar una cantidad!'
+                    //footer: '<a href="">Why do I have this issue?</a>'
+                })
+            }
+        })
+    });
+
+    $("body").on("click", ".eliminaritemdetallepedido", function (e) {
+        var $this = $(this)
+        e.preventDefault();
+        var iddetallepedido = $this.data("iddetallepedido");
+         idpedido = $this.data("idpedido");
+
+        Swal.fire({
+            title: 'Estas seguro?',
+            text: "No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, eliminar producto!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Se elimino con exito'
+                })
+
+                var request1 = $.ajax({
+                    url: '/LlamadasAjax/EliminarItemDetallePedidoPresencialAdmin?iddetallepedido=' + iddetallepedido
+                });
+                request1.done(function (resp) {
+                    if (resp == true) {
+                        var request = $.ajax({
+                            url: '/LlamadasAjax/ObtenerDetallePedidoPresencialAdmin?idpedido=' + idpedido
+                        });
+                        request.done(function (resp) {
+                            $("#detallpedido").html(resp);
+
+                            var request3 = $.ajax({
+                                url: '/LlamadasAjax/ObtenerPedidosPresencialesNuevosAdmin'
+                            });
+                            request3.done(function (resp) {
+                                $("#tbodynuevospedidos").html(resp);
+                            });
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Se elimino con exito'
+                            })
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Algo salio mal!',
+                            //footer: '<a href="">Why do I have this issue?</a>'
+                        })
+                    }
+                });
+
+            }
+        })
+    });
+
+    $("#btnagregarproducto").click(function (e) {
+        e.preventDefault();
+        $("#modalbodyagregarproducto").html(
+            `
+  <form action="/PedidoPresencial/AgregarProductoAPedido?idpedido=${idpedido}&&vista=Nuevos" method="post">
+                    <div class="container">
+                        <div class="col-md-6">
+                            <div>
+                                <input type="text" name="Producto" class="form-control" placeholder="Ingrese nombre del producto" required />
+                                <span class="text-danger">@Html.ValidationMessage("Producto")</span>
+                            </div>
+                            <br />
+                            <div>
+                                <input type="text" name="Medidas" class="form-control" placeholder="Ingrese medidas del producto" required />
+                                <span class="text-danger">@Html.ValidationMessage("Medidas")</span>
+                            </div>
+                            <br />
+                            <div>
+                                <textarea class="form-control" name="Descripcion" placeholder="Ingrese una breve descripción de su producto a cotizar" required></textarea>
+                                <span class="text-danger">@Html.ValidationMessage("Descripcion")</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <h6>Ingrese cantidad de productos que desea el cliente</h6>
+                                <input type="number" name="Cantidad" class="form-control" placeholder="Ingrese cantidad de productos que desea" required min="1" />
+                                <span class="text-danger">@Html.ValidationMessage("Cantidad")</span>
+                            </div>
+                            <br />
+                            <div>
+                                <h6>Ingrese precio del producto</h6>
+                                <input type="number" name="Precio" class="form-control" placeholder="Ingrese precio del producto" required min="1" />
+                                <span class="text-danger">@Html.ValidationMessage("Precio")</span>
+                            </div>
+                            <div>
+                                <br />
+                                <button class="btn btn-primary pull-right" @*style="height:30px"*@><span class="glyphicon glyphicon-plus"></span>Confirmar registro</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            `
+        );
+    });
+
+</script>

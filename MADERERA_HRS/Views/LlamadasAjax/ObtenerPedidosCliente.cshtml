@@ -1,0 +1,44 @@
+﻿@{Layout = null;}
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Fecha</td>
+        <td>@item.Fecha_Entrega_Solicitada</td>
+        <td>@item.Direccion_Entrega</td>
+        @*<td>@item.Telefono_Comunicacion</td>*@
+        <td>@item.Total</td>
+        <td>
+            @if (item.Id_Estado == 1)
+            {
+                <span class="label label-default" style="background-color:blueviolet;color:black;margin-right:10px"><a style="color:black" href="/Home/MisPedidos?idestado=1">@item.Estado.Nombre</a></span>
+            }
+            @if (item.Id_Estado == 2)
+            {
+                <span class="label label-default" style="background-color:chocolate;color:black;margin-right:10px"><a style="color:black" href="/Home/MisPedidos?idestado=2">@item.Estado.Nombre</a></span>
+            }
+            @if (item.Id_Estado == 4)
+            {
+                <span class="label label-default" style="background-color:darkorange;color:black;margin-right:10px"><a style="color:black" href="/Home/MisPedidos?idestado=4">Construido</a></span>
+            }
+            @if (item.Id_Estado == 5)
+            {
+                <span class="label label-default" style="background-color:Highlight;color:black;margin-right:10px"><a style="color:black" href="/Home/MisPedidos?idestado=5">Recibido</a></span>
+            }
+        </td>
+        <td>
+            @{string a = "";
+                a = Convert.ToString(item.Avance + "%");
+            }
+            <div class="progress">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: @a" aria-valuenow="@item.Avance" aria-valuemin="0" aria-valuemax="100">@a</div>
+            </div>
+        </td>
+        <td>
+            <a class="verdetallepedido btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lg2" data-idpedido="@item.Id_Pedido"><span class="glyphicon glyphicon-eye-open"></span> Ver productos</a>
+            @if (item.Id_Estado == 1)
+            {
+                <a class="eliminarpedido btn btn-danger" data-toggle="modal" data-target=".bd-example-modal-lg1" data-idpedido="@item.Id_Pedido"><span class="glyphicon glyphicon-trash"></span></a>
+            }
+        </td>
+    </tr>
+}

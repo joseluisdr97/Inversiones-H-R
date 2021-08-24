@@ -1,0 +1,124 @@
+﻿@{ Layout = "Layout_Cliente"; }
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Columna 1</th>
+                <th>Columna 1</th>
+                <th>Columna 1</th>
+                <th>Columna 1</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Fila 1</td>
+                <td>Fila 1</td>
+                <td>Fila 1</td>
+                <td>Fila 1</td>
+            </tr>
+            <tr>
+                <td>Fila 1</td>
+                <td>Fila 1</td>
+                <td>Fila 1</td>
+                <td>Fila 1</td>
+            <tr>
+                <td>Fila 1</td>
+                <td>Fila 1</td>
+                <td>Fila 1</td>
+                <td>Fila 1</td>
+            <tr>
+                <td>Fila 1</td>
+                <td>Fila 1</td>
+                <td>Fila 1</td>
+                <td>Fila 1</td>
+            </tr>
+        </tbody>
+    </table>
+    <button id="btnprueba">ibtn</button>
+</div>
+
+
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    //Cambio de datos al cargar la pagina
+    $(document).ready(function () {
+        $("#contenidobanner").text("Cotizaciones");
+        $("#contenidobanner1").text("Cotizaciones");
+        $("#bs-example-navbar-collapse-1").html(`
+<ul class="nav navbar-nav menu__list">
+                                <ul class="nav navbar-nav menu__list">
+                                    <li class=" menu__item"><a class="menu__link" href="/Home/Index">Inicio</a></li>
+                                    <li class=" menu__item"><a class="menu__link" href="/Home/Productos">Productos</a></li>
+                                    <li class=" menu__item"><a class="menu__link" href="/Home/Cotizaciones">Cotizaciones</a></li>
+                                    <li class="active menu__item menu__item--current"><a class="menu__link" href="/Home/Contacto">Contacto <span class="sr-only">(current)</span></a></li>
+                                </ul>
+                            </ul>
+            `
+        );
+    });
+</script>
+
+
+
+<!--<form action="/UsuarioCliente/Registrarse" method="post">
+    <div class="col-md-6">
+        <div>
+            <input type="text" asp-for="Nombre">
+            <label>Nombre completo</label>
+            <span></span>
+        </div>
+        <span class="text-danger"> @Html.ValidationMessage("Nombre")</span>
+        <div>
+            <input type="text" asp-for="DNI">
+            <label>DNI</label>
+            <span></span>
+        </div>
+        @Html.ValidationMessage("DNI")
+        <div>-->
+            <!--Antes en net framework cuando no era net core, se ponia de la siguiente manera <input type="text" name="Apodo" value=" arroba Model.Apodo"/>-->
+            <!--<input type="text" asp-for="Apodo">
+            <label>Como deseas que te llamen</label>
+            <span></span>
+        </div>
+        @Html.ValidationMessage("Apodo")
+        <div>
+            <input type="text" asp-for="Direccion">
+            <label>Dirección</label>
+            <span></span>
+        </div>
+        @Html.ValidationMessage("Direccion")
+        <div>
+            <input type="text" asp-for="Telefono">
+            <label>Teléfono</label>
+            <span></span>
+        </div>
+        @Html.ValidationMessage("Telefono")
+    </div>
+    <div class="col-md-6">
+        <div>
+            <input type="text" asp-for="Correo">
+            <label>Correo</label>
+            <span></span>
+        </div>
+        @Html.ValidationMessage("Correo")
+        <div>
+            <input type="text" asp-for="Contrasenia">
+            <label>Contraseña</label>
+            <span></span>
+        </div>
+        @Html.ValidationMessage("Contrasenia")
+        <div>
+            <input type="text" name="RepitaContasenia" value="@ViewBag.RepitaContrasenia">
+            <label>Repita Contraseña</label>
+            <span></span>
+        </div>
+        @Html.ValidationMessage("RepitaContasenia")
+    </div>
+
+    <button>Registrarme</button>
+    <br />
+    <br />
+    <a style="margin-left:15px" href="/UsuarioCliente/Login">¡Ya tengo cuenta! Iniciar sesión</a>
+</form>-->

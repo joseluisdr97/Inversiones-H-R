@@ -1,0 +1,563 @@
+﻿@{ Layout = "Layout_Admin"; }
+
+
+<footer>
+    <h1>Nuevos pedidos cotizados</h1>
+    <br />
+    <br />
+    <form action="/CotizacionAdmin/NuevosPedidosCotizados" method="get">
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="query" placeholder="Ingrese DNI" />
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary">Buscar</button>
+            </div>
+            <div class="col-sm-2"></div>
+            @*<div class="col-sm-2">
+                    <a class="btn btn-primary pull-right" href="/ProductoAdmin/Crear"><span class="glyphicon glyphicon-plus"></span> Crear</a>
+                </div>*@
+        </div>
+    </form>
+    <br />
+    <div class="container">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Teléfono-comunicación</th>
+                    <th>Fecha</th>
+                    <th>Fecha-E-Solicitada</th>
+                    <th>Dirección entrega</th>
+                    <th>Total</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbodycotizacion">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Usuario.DNI</td>
+                        <td>@item.Usuario.Nombre</td>
+                        <td>@item.Telefono_Comunicacion</td>
+                        <td>@item.Fecha</td>
+                        <td>@item.Fecha_Entrega_Solicitada</td>
+                        <td>@item.Direccion_Entrega</td>
+                        <td>@item.Total</td>
+                        <td>
+                            <button type="button" class="verdetallecotizacion btn btn-success" data-toggle="modal" data-target=".bd-example-modal-xl" data-idcotizacion="@item.Id_Cotizacion"><span class="fa fa-eye"></span> ver productos</button>
+                            @*<a class="cotizarproductos btn btn-success" data-toggle="modal" data-target=".modal-dialog modal-xl" data-idcotizacion="@item.Id_Cotizacion"><span class="fa fa-dollar"> Cotizar productos</span></a>*@
+                            <a class="iniciarconstruccion btn btn-warning" data-toggle="modal" data-target=".modal-dialog modal-xl1" data-idcotizacion="@item.Id_Cotizacion"><span class="glyphicon glyphicon-play"></span> Iniciar construcción</a>
+                            <a class="eliminarcotizacion btn btn-danger" data-idcotizacion="@item.Id_Cotizacion"><span class="glyphicon glyphicon-trash"></span></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Extra large modal para listar todos mis productos que debo cotizar-->
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Productos a cotizar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Producto</th>
+                                <th>Medidas</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unit.</th>
+                                <th>Subtotal</th>
+                                <th>Descripción</th>
+                                <th> Opciones </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodylistaproductosacotizar">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer" id="footerdetalleproductos">
+                    <button id="btnagregarproducto" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Agregar producto</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal para mostrar la imagen de mi producto------------------->
+    <!-- Large modal -->
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Imagen de mi producto a cotizar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="mostrarimagen">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Modal para mostrar el formulario y agregar un nuevo producto-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar producto a mi pedido</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="mostrarformulariodeagregarproducto">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/scriptsmaderera/Notificaciones.js"></script>
+@*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>*@
+<!-- CSS only -->
+
+<script>
+        var idcotizacion = 0;
+        var iddetallecotizacion = 0;
+        $("body").on("click", ".verimagendeproductoacotizar", function (e) {
+            e.preventDefault();
+            var $this = $(this);
+            iddetallecotizacion = $this.data("iddetallecotizacion");
+            var request = $.ajax({
+                url: '/LlamadasAjax/ObtenerImagenDeProducto?iddetalle=' + iddetallecotizacion
+            });
+            request.done(function (resp) {
+                if (resp != null) {
+                    $("#mostrarimagen").html('<img src="' + resp +'" />');
+                }
+            });
+
+        });
+
+    $("#btnagregarproducto").click(function (e) {
+        e.preventDefault();
+
+        $("#mostrarformulariodeagregarproducto").html(
+            `
+  <form action="/CotizacionAdmin/AgregarProductoAPedido?idcotizacion=${idcotizacion}&&vista=NuevosPedidosCotizados" method="post" enctype="multipart/form-data">
+                        <div class="container">
+                            <div>
+                                <label>Ingrese imagen del producto</label>
+                                <input type="file" name="file" class="form-control" required id="imagedoc" accept="image,jpg,png" />
+                            </div>
+                            <br />
+                            <div>
+                                <input type="text" name="Producto" class="form-control" placeholder="Ingrese nombre del producto" required />
+                            </div>
+                            <br />
+                            <div>
+                                <input type="text" name="Medidas" class="form-control" placeholder="Ingrese medidas del producto" required />
+                            </div>
+                            <br />
+                            <div>
+                                <input type="number" name="Cantidad" min="1" class="form-control" placeholder="Ingrese cantidad de productos que desea el cliente" required />
+                            </div>
+                            <br />
+                            <div>
+                                <input type="number" name="Precio" min="1" class="form-control" placeholder="Ingrese precio unitario del producto" required />
+                            </div>
+                            <br />
+                            <div>
+                                <input type="text" name="Descripcion" class="form-control" placeholder="Ingrese una breve descripción del producto" required />
+                            </div>
+                            <div>
+                                <br />
+                                <button class="btn btn-primary pull-right" @*style="height:30px"*@><span class="fa fa-save"> Confirmar registro</span></button>
+                            </div>
+                        </div>
+                    </form>
+            `
+        );
+    });
+
+        $("body").on("click", ".eliminarcotizacion", function (e) {
+            e.preventDefault();
+            var $this = $(this);
+            idcotizacion = $this.data("idcotizacion");
+
+            Swal.fire({
+                title: 'Estas seguro?',
+                text: "No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Si, eliminar cotización!'
+            }).then((result) => {
+                if (result.value) {
+                    location.href = "/CotizacionAdmin/Eliminar?idcotizacion=" + idcotizacion + "&&Vista=NuevosPedidosCotizados";
+                }
+            })
+        });
+
+    $("body").on("click", ".iniciarconstruccion", function (e) {
+            e.preventDefault();
+            var $this = $(this);
+            var idcotizacion = $this.data("idcotizacion");
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Estas seguro?',
+                text: "No podras revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, iniciar construcción!',
+                cancelButtonText: 'No, cancelar!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = "/CotizacionAdmin/IniciarConstruccion?idcotizacion=" + idcotizacion;
+                }
+            })
+        });
+
+        $("body").on("click", ".verdetallecotizacion", function (e) {
+            var $this = $(this)
+            e.preventDefault();
+            idcotizacion = $this.data("idcotizacion");
+
+            var request = $.ajax({
+                url: '/LlamadasAjax/ObtenerDetalleCotizacionAdmin?idcotizacion=' + idcotizacion
+            });
+            request.done(function (resp) {
+                $("#tbodylistaproductosacotizar").html(resp);
+            });
+
+        });
+
+        $("body").on("click", ".cotizaritemdetallecotizacion", function (e) {
+            var $this = $(this)
+            e.preventDefault();
+            iddetallecotizacion = $this.data("iddetallecotizacion");
+            idcotizacion = $this.data("idcotizacion");
+        });
+
+        $("#confirmarcotizacionitemdetallecotizacion").click(function (e) {
+            e.preventDefault();
+            var inputcantidad = $("#inputcotizaciondepedido").val();
+
+            if (inputcantidad > 0) {
+                var request1 = $.ajax({
+                    url: '/LlamadasAjax/ConfirmarCotizaciondeitemDetalleCotizacion?iddetallecotizacion=' + iddetallecotizacion + "&&precio=" + inputcantidad
+                });
+                request1.done(function (resp) {
+                    if (resp == true) {
+                        var request = $.ajax({
+                            url: '/LlamadasAjax/ObtenerDetalleCotizacionAdmin?idcotizacion=' + idcotizacion
+                        });
+                        request.done(function (resp) {
+                            $("#tbodylistaproductosacotizar").html(resp);
+
+                            var request3 = $.ajax({
+                                url: '/LlamadasAjax/ObtenerNuevosPedidosCotizadosAdmin'
+                            });
+                            request3.done(function (resp) {
+                                $("#tbodycotizacion").html(resp);
+                            });
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Tu cotización se realizó con exito'
+                            })
+                            $("#cerrarmodaldeitemacotizar").trigger('click');
+                        });
+                    }
+
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Algo paso mal!'
+                            //footer: '<a href="">Why do I have this issue?</a>'
+                        })
+                    }
+
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'El precio unitario debe ser mayor a cero!'
+                    //footer: '<a href="">Why do I have this issue?</a>'
+                })
+            }
+        });
+
+        $("body").on("click", ".actualizarcantidaddetallecotizacion", function (e) {
+            var $this = $(this)
+            e.preventDefault();
+            iddetallecotizacion = $this.data("iddetallecotizacion");
+            idcotizacion = $this.data("idcotizacion");
+
+            Swal.fire({
+                text: 'Actualizar cantidad de producto',
+                input: 'number'
+            }).then(function (result) {
+                if (result.value) {
+                    const amount = result.value
+                    if (amount > 0) {
+                        var request1 = $.ajax({
+                            url: '/LlamadasAjax/ActualizarCantidadDeDetalleCotizacionAdmin?iddetallecotizacion=' + iddetallecotizacion + "&&cantidad=" + amount
+                        });
+                        request1.done(function (resp) {
+                            if (resp == true) {
+                                var request = $.ajax({
+                                    url: '/LlamadasAjax/ObtenerDetalleCotizacionAdmin?idcotizacion=' + idcotizacion
+                                });
+                                request.done(function (resp) {
+                                    $("#tbodylistaproductosacotizar").html(resp);
+
+                                    var request3 = $.ajax({
+                                        url: '/LlamadasAjax/ObtenerNuevosPedidosCotizadosAdmin'
+                                    });
+                                    request3.done(function (resp) {
+                                        $("#tbodycotizacion").html(resp);
+                                    });
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                        }
+                                    })
+
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: 'Se actualizo con exito'
+                                    })
+                                });
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Algo salio mal!',
+                                    //footer: '<a href="">Why do I have this issue?</a>'
+                                })
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'La cantidad debe ser mayor a cero!'
+                            //footer: '<a href="">Why do I have this issue?</a>'
+                        })
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Asegurese de ingresar una cantidad!'
+                        //footer: '<a href="">Why do I have this issue?</a>'
+                    })
+                }
+            })
+        });
+
+        $("body").on("click", ".eliminaritemdetallecotizacion", function (e) {
+            var $this = $(this)
+            e.preventDefault();
+            iddetallecotizacion = $this.data("iddetallecotizacion");
+            idcotizacion = $this.data("idcotizacion");
+
+            Swal.fire({
+                title: 'Estas seguro?',
+                text: "No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Si, eliminar producto!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var request1 = $.ajax({
+                        url: '/LlamadasAjax/EliminarItemDetalleCotizacionAdmin?iddetallecotizacion=' + iddetallecotizacion
+                    });
+                    request1.done(function (resp) {
+                        if (resp == true) {
+                            var request = $.ajax({
+                                url: '/LlamadasAjax/ObtenerDetalleCotizacionAdmin?idcotizacion=' + idcotizacion
+                            });
+                            request.done(function (resp) {
+                                $("#tbodylistaproductosacotizar").html(resp);
+
+                                var request3 = $.ajax({
+                                    url: '/LlamadasAjax/ObtenerNuevosPedidosCotizadosAdmin'
+                                });
+                                request3.done(function (resp) {
+                                    $("#tbodycotizacion").html(resp);
+                                });
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Se elimino con exito'
+                                })
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Algo salio mal!',
+                                //footer: '<a href="">Why do I have this issue?</a>'
+                            })
+                        }
+                    });
+
+                }
+            })
+        });
+
+        $("#btnagregarproducto").click(function (e) {
+            e.preventDefault();
+            var request = $.ajax({
+                url: '/LlamadasAjax/ObtenerListaDeProductosParaAgregarAPedido'
+            });
+            request.done(function (resp) {
+                $("#tbodylistaproductos").html(resp);
+            });
+
+        });
+
+        $("body").on("click", ".agregarproductoapedido", function (e) {
+            var $this = $(this)
+            e.preventDefault();
+            var idproducto = $this.data("idproducto");
+
+            var request = $.ajax({
+                url: '/LlamadasAjax/AgregarProductoAPedido?idpedido=' + idpedido + '&&idproducto=' + idproducto
+            });
+            request.done(function (resp) {
+                if (resp == true) {
+                    var request1 = $.ajax({
+                        url: '/LlamadasAjax/ObtenerDetallePedidoAdmin?idpedido=' + idpedido
+                    });
+                    request1.done(function (resp) {
+                        $("#detallpedido").html(resp);
+                    });
+                    var request3 = $.ajax({
+                        url: '/LlamadasAjax/ObtenerPedidosNuevosAdmin'
+                    });
+                    request3.done(function (resp) {
+                        $("#tbodynuevospedidos").html(resp);
+                    });
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Se agregó con exito'
+                    })
+                }
+            });
+        });
+
+</script>

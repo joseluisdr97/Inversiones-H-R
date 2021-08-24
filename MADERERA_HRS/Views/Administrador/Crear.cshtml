@@ -1,0 +1,144 @@
+﻿
+@{ Layout = "Layout_Admin"; }
+@model Usuario
+
+<footer>
+    <div class="container">
+        <h1>Administradores - Registrar administrador</h1>
+        <br />
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <form action="/Administrador/Crear" method="post" enctype="multipart/form-data">
+                    <div class="col-sm-6">
+                        <div>
+                            <label class="control-label">Foto o imagen</label>
+                            <input class="form-control" accept="image,jpg,png" type="file" asp-for="Imagen" name="file" required id="imagedoc" />
+                            <span class="text-danger">@Html.ValidationMessage("Imagen")</span>
+                        </div>
+                        <div>
+                            <label class="control-label">Nombre</label>
+                            <input class="form-control" type="text" asp-for="Nombre" placeholder="Ingrese nombre" />
+                            <span class="text-danger">@Html.ValidationMessage("Nombre")</span>
+                        </div>
+                        <div>
+                            <label class="control-label">DNI</label>
+                            <input class="form-control" type="text" asp-for="DNI" placeholder="Ingrese DNI" />
+                            <span class="text-danger">@Html.ValidationMessage("DNI")</span>
+                        </div>
+                        <div>
+                            <label class="control-label">Como le gusta que le llamen</label>
+                            <input class="form-control" type="text" asp-for="Apodo" placeholder="Ingrese su apodo" />
+                            <span class="text-danger">@Html.ValidationMessage("Apodo")</span>
+                        </div>
+                        <div>
+                            <label class="control-label">Dirección</label>
+                            <input class="form-control" type="text" asp-for="Direccion" placeholder="Dirección" />
+                            <span class="text-danger">@Html.ValidationMessage("Direccion")</span>
+                        </div>
+                        <div>
+                            <label class="control-label">Teléfono</label>
+                            <input class="form-control" type="text" asp-for="Telefono" placeholder="Ingrese teléfono" />
+                            <span class="text-danger">@Html.ValidationMessage("Telefono")</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div>
+                            <label class="control-label">Correo</label>
+                            <input class="form-control" type="text" asp-for="Correo" placeholder="Ingrese correo" />
+                            <span class="text-danger">@Html.ValidationMessage("Correo")</span>
+                        </div>
+                        <div>
+                            <label class="control-label">Contraseña</label>
+                            <input class="form-control" type="password" asp-for="Contrasenia" placeholder="Ingrese contraseña" />
+                            <span class="text-danger">@Html.ValidationMessage("Contrasenia")</span>
+                        </div>
+                        <div>
+                            <label class="control-label">Confirme contraseña</label>
+                            <input class="form-control" type="password" name="RepitaContasenia" placeholder="Confirme contraseña" />
+                            <span class="text-danger">@Html.ValidationMessage("RepitaContrasenia")</span>
+                        </div>
+                        <br />
+                        <div>
+                            <a class=" btn btn-danger" href="/Administrador/Index"><span class="glyphicon glyphicon-circle-arrow-left"></span>Volver</a>
+                            <button class="btn btn-primary"><span class="glyphicon glyphicon-saved"></span> Guardar</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+
+
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/scriptsmaderera/Notificaciones.js"></script>
+<script type="text/javascript">
+    (function () {
+        function filePreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imagePreview').html("<img src='" + e.target.result + "' />");
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $('#imagedoc').change(function (el) {
+            if (LimitAttach(this, 1))
+                filePreview(this);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    function LimitAttach(tField, iType) {
+        file = tField.value;
+        if (iType == 1) {
+            extArray = new Array(".jpeg", ".jpe", ".gif", ".jpg", ".png");
+        }
+        allowSubmit = false;
+        if (!file) return false;
+        while (file.indexOf("\\") != -1) file = file.slice(file.indexOf("\\") + 1);
+        ext = file.slice(file.indexOf(".")).toLowerCase();
+        for (var i = 0; i < extArray.length; i++) {
+            if (extArray[i] == ext) {
+                allowSubmit = true;
+                break;
+            }
+        }
+        if (allowSubmit) {
+            return true
+        } else {
+            tField.value = "";
+            alert("Usted sólo puede subir archivos con extensiones " + (extArray.join(" ")) + "\n Reiniciando Formulario");
+            return false;
+            setTimeout("location.reload()", 2000);
+        }
+    }
+</script>

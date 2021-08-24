@@ -1,0 +1,18 @@
+﻿@{ Layout = null;}
+@foreach (var item in ViewBag.Carrito_Pedidos)
+{
+    <tr>
+        <td>@item.Producto</td>
+        <td>@item.Medidas</td>
+        <td>@item.Descripcion</td>
+        <td>
+            @item.Cantidad
+            <a class="actualizarcantidaditemcarrito btn btn-warning" data-idcarritopedido="@item.Id_Carrito_Pedido_Presencial"><span class="glyphicon glyphicon-refresh"></span>@*Eliminar*@</a>
+        </td>
+        <td>@item.Precio</td>
+        <td>@item.Sub_Total</td>
+        <td>
+            <a class="eliminaritemcarrito btn btn-danger" data-idcarritopedido="@item.Id_Carrito_Pedido_Presencial"><span class="glyphicon glyphicon-trash"></span>Eliminar</a>
+        </td>
+    </tr>
+}

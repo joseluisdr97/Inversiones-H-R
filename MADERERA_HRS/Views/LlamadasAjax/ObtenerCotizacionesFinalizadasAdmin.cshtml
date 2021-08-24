@@ -1,0 +1,18 @@
+﻿@{ Layout = null;}
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Usuario.DNI</td>
+        <td>@item.Usuario.Nombre</td>
+        <td>@item.Usuario.Telefono</td>
+        <td>@item.Fecha</td>
+        <td>@item.Total</td>
+        <td>@item.Estado.Nombre</td>
+        <td>
+            <button type="button" class="verdetallecotizacion btn btn-success" data-toggle="modal" data-target=".bd-example-modal-xl" data-idcotizacion="@item.Id_Cotizacion"><span class="fa fa-eye"></span> ver productos</button>
+            @*<a class="cotizarproductos btn btn-success" data-toggle="modal" data-target=".modal-dialog modal-xl" data-idcotizacion="@item.Id_Cotizacion"><span class="fa fa-dollar"> Cotizar productos</span></a>*@
+            <button type="button" class="registrarcomopedido btn btn-warning" style="margin-top:2px" data-toggle="modal" data-target="#exampleModal" data-idcotizacion="@item.Id_Cotizacion"><span class="glyphicon glyphicon-play"></span>  Registrar como pedido</button>
+            <a class="eliminarcotizacion btn btn-danger" data-idcotizacion="@item.Id_Cotizacion"><span class="glyphicon glyphicon-trash"></span></a>
+        </td>
+    </tr>
+}

@@ -1,0 +1,155 @@
+﻿
+@{ Layout = "Layout_Admin"; }
+@model Producto
+
+<footer>
+    <div class="container">
+        <h1>Productos - Registrar producto</h1>
+        <br />
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+
+
+                <form action="/ProductoAdmin/Crear" method="post" enctype="multipart/form-data">
+                    <div>
+                        <h5 class="control-label">Imagen principal</h5>
+                        <input class="form-control" accept="image,jpg,png" type="file" asp-for="Imagen" name="file" required id="imagedoc" />
+                        <span class="text-danger">@Html.ValidationMessage("Imagen")</span>
+                    </div>
+                    <div>
+                        <h5 class="control-label">Imagen secundaria 1</h5>
+                        <input class="form-control" accept="image,jpg,png" type="file" asp-for="Imagen1" name="file1" required id="imagedoc" />
+                        <span class="text-danger">@Html.ValidationMessage("Imagen1")</span>
+                    </div>
+                    <div>
+                        <h5 class="control-label">Imagen secundaria 2</h5>
+                        <input class="form-control" accept="image,jpg,png" type="file" asp-for="Imagen2" name="file2" required id="imagedoc" />
+                        <span class="text-danger">@Html.ValidationMessage("Imagen2")</span>
+                    </div>
+                    <div>
+                        <label class="control-label">Nombre</label>
+                        <input class="form-control" type="text" asp-for="Nombre" placeholder="Ingrese nombre" />
+                        <span class="text-danger">@Html.ValidationMessage("Nombre")</span>
+                    </div>
+                    <div>
+                        <label class="control-label">Medidas</label>
+                        <input class="form-control" type="text" asp-for="Medidas" placeholder="Ingrese medidas" />
+                        <span class="text-danger">@Html.ValidationMessage("Medidas")</span>
+                    </div>
+                    <div>
+                        <label class="control-label">Precio Unit.</label>
+                        <input class="form-control" type="number" asp-for="Precio" placeholder="Ingrese precio" />
+                        <span class="text-danger">@Html.ValidationMessage("Precio")</span>
+                    </div>
+                    <div>
+                        <label class="control-label">Categoría :</label>
+                        <select class="form-control" asp-for="Id_Categoria">
+                            <option value="0">--Seleccione categoría--</option>
+                            @foreach (var categoria in ViewBag.Categorias)
+                            {
+                                <option value="@categoria.Id_Categoria">@categoria.Nombre</option>
+                            }
+                        </select>
+                        <span class="text-danger">@Html.ValidationMessage("Categoria")</span>
+                    </div>
+                    <div>
+                        <label class="control-label">Descripción</label>
+                        <textarea class="form-control" asp-for="Descripcion" placeholder="Ingrese Descripción"></textarea>
+                        @*<textarea class="form-control" type="number" asp-for="Descripcion" />*@
+                        <span class="text-danger">@Html.ValidationMessage("Descripcion")</span>
+                    </div>
+                    <br />
+                    <div>
+                        <a class=" btn btn-danger" href="/ProductoAdmin/Index"><span class="glyphicon glyphicon-circle-arrow-left"></span>Volver</a>
+                        <button class="btn btn-primary"><span class="glyphicon glyphicon-saved"></span> Guardar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/scriptsmaderera/Notificaciones.js"></script>
+<script>
+
+    //$("#Categoria").change(function () {
+    //    var request2 = $.ajax({
+    //        url: '/LlamadasAjax/ObtenerListaDeProductosPorCategoriaParaAdmin?id=' + $('#Categoria').val(),
+    //        type: 'GET'
+    //    });
+
+    //    request2.done(function (respuesta) {
+    //        $('#tbody').html(respuesta);
+    //    });
+    //});
+
+</script>
+<script type="text/javascript">
+    (function () {
+        function filePreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imagePreview').html("<img src='" + e.target.result + "' />");
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $('#imagedoc').change(function (el) {
+            if (LimitAttach(this, 1))
+                filePreview(this);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    function LimitAttach(tField, iType) {
+        file = tField.value;
+        if (iType == 1) {
+            extArray = new Array(".jpeg", ".jpe", ".gif", ".jpg", ".png");
+        }
+        allowSubmit = false;
+        if (!file) return false;
+        while (file.indexOf("\\") != -1) file = file.slice(file.indexOf("\\") + 1);
+        ext = file.slice(file.indexOf(".")).toLowerCase();
+        for (var i = 0; i < extArray.length; i++) {
+            if (extArray[i] == ext) {
+                allowSubmit = true;
+                break;
+            }
+        }
+        if (allowSubmit) {
+            return true
+        } else {
+            tField.value = "";
+            alert("Usted sólo puede subir archivos con extensiones " + (extArray.join(" ")) + "\n Reiniciando Formulario");
+            return false;
+            setTimeout("location.reload()", 2000);
+        }
+    }
+</script>
